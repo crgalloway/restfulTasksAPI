@@ -2,7 +2,8 @@ const express = require('express')
 const app = express();
 
 const bp = require('body-parser')
-app.use(bp.urlencoded({}));
+app.use(bp.json());
+app.use(express.static( __dirname + '/helloAngular/dist' ));
 
 var mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/restfulAPI')
