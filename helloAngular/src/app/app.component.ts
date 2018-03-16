@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpService } from './http.service';
 
 @Component({
@@ -6,13 +6,18 @@ import { HttpService } from './http.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 	title = 'MEAN';
 	tasks = [];
 	singleTask = {};
+	newTask: any;
+	editTask: any;
+	showEdit = false;
 	constructor(private _httpService: HttpService){
-		// this.getTheTasks()
-		// this.getJustOneTask(event)
+	}
+	ngOnInit(){
+		this.newTask = {title:"", description:""}
+		this.editTask = {title:"", description:""}
 	}
 	getTheTasks(){
 		let x = this._httpService.getTasks()
@@ -20,12 +25,30 @@ export class AppComponent {
 			this.tasks = data['data']
 		})
 	}
-	getJustOneTask(event, id){
-		console.log(event)
-		console.log(id)
+	getJustOneTask(id){
 		this._httpService.getOneTask(id).subscribe(data =>{
-			console.log(data)
 			this.singleTask = data['data']
 		})
+	}
+	onSubmit(){
+		this._httpService.createTask(this.newTask).subscribe()
+		this.newTask = { title: "", description: "" }
+	}
+	deleteMe(id){
+		this._httpService.deleteTask(id).subscribe()
+	}
+	editMe(id){
+		this._httpService.getOneTask(id).subscribe(data =>{
+			console.log(data)
+			this.editTask = data['data']
+			this.showEdit = true
+		})
+	}
+	submitEdit(id){
+		console.log('Got to components')
+		console.log(id)
+		this._httpService.editTask(id, this.editTask).subscribe()
+		this.editTask = { title: "", description: "" }
+		this.showEdit = false
 	}
 }

@@ -1,20 +1,32 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-  <h1>
-    Restful Tasks API
-  </h1>
+  <h1>Restful Tasks API</h1>
   <button (click)="getTheTasks()">Get the tasks!</button>
 </div>
-<div style="text-align:center">
-  <h2>All the tasks: </h2>
-  <ul>
-    <li *ngFor="let task of tasks">{{task['title']}} - {{task['description']}} -  id: {{task['_id']}}</li>
-  </ul>
-  <h2>The second task:</h2>
-  <input type="text" name="" #id>
-  <button (click)="getJustOneTask($event, id.value)">Get one task</button>
-  <ul>
-    <li>{{singleTask['title']}} - {{singleTask['description']}}</li>
-  </ul>
+<div>
+  <h1>Create new Task</h1>
+  <form (submit)="onSubmit()">
+    <p>{{ newTask | json }}</p>
+    Title: <input type="text" name="newTask.title" [(ngModel)]="newTask.title">
+    Description: <input type="text" name="newTask.description" [(ngModel)]="newTask.description">
+    <input type="submit" value="Create that task!">
+  </form>
 </div>
-
+<div>
+  <h2>Task list: </h2>
+    <div *ngFor='let task of tasks' style="width: 30%; border: 1px solid black; background-color: lightgrey; margin: 10px; display: inline-block;">
+      <p>id: {{task['_id']}}</p>
+      <h3>{{task['title']}}</h3>
+      <h4>{{task['description']}}</h4>
+      <button style="" (click)="editMe( task['_id'] )">Edit</button>
+      <button style="" (click)="deleteMe( task['_id'] )">Delete</button>
+    </div>
+    <div *ngIf="showEdit">
+      <h1>Edit a Task</h1>
+      <form (submit)="submitEdit( editTask['_id'] )">
+        Title: <input type="text" name="editTask.title" [(ngModel)]="editTask.title">
+        Description: <input type="text" name="editTask.description" [(ngModel)]="editTask.description">
+        <input type="submit" value="Edit that task!">
+      </form>
+    </div>
+</div>

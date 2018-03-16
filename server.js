@@ -49,19 +49,13 @@ app.post('/tasks', function(req,res){
 			console.log ("Returned error", err)
 			res.json({message: "Error", error: err})
 		}
-		else {
-			res.redirect('/tasks')
-		}
 	})
 })
 app.put('/tasks/:id', function(req,res){
-	Task.update({_id: req.params.id}, {title:req.body.title, description: req.body.description,completed: req.body.completed}, function(err){
+	var task = Task.update({_id: req.params.id}, {title:req.body.title, description: req.body.description,completed: req.body.completed}, function(err){
 		if(err){
 			console.log ("Returned error", err)
 			res.json({message: "Error", error: err})
-		}
-		else {
-			res.redirect('/tasks')
 		}
 	})
 })
@@ -70,9 +64,6 @@ app.delete('/tasks/:id', function(req,res){
 		if(err){
 			console.log ("Returned error", err)
 			res.json({message: "Error", error: err})
-		}
-		else {
-			res.redirect('/tasks')
 		}
 	})
 })
